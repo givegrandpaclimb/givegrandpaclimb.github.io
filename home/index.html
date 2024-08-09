@@ -2,9 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>航途Route主页</title>
+    <style>
+		body {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			margin: 0;
+		}
+
+		#progress {
+			width: 60%;
+		}
+    </style>
 </head>
 <body>
-<h1>慢慢等！别着急嘛~</h1>
+<h1>慢慢等别着急嘛~</h1>
+<h3>开发进度</h3>
+<progress id="progress" max="100" value="0"></progress>
+<script>
+	window.onload = function () {
+		const progress = document.getElementById('progress');
+		let width = 0;
+		const interval = setInterval(function () {
+			if (width >= 70) {
+				clearInterval(interval);
+			}
+			else {
+				width++;
+				progress.value = width;
+			}
+		}, 16);
+	};
+</script>
 </body>
 </html>
