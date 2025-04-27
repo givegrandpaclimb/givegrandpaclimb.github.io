@@ -1,1 +1,1 @@
-{"name":"ChatGPT Plus","short_name":"chatgptplus","start_url":"/","display":"standalone","background_color":"#131313","theme_color":"#131313","lang":"en","scope":"/","icons":[{"src":"pwa-256x256.png","sizes":"256x256","type":"image/png"}]}
+{"name":"ChatGPT Plus","short_name":"chatgptplus","start_url":"/","display":"standalone","background_color":"#ffffff","theme_color":"#42b883","lang":"en","scope":"/","icons":[{"src":"pwa-256x256.png","sizes":"256x256","type":"image/png"}]}
