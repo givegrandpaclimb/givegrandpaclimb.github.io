@@ -1,0 +1,1 @@
+import{p as r}from"./vendor-smithy-querystring-parser-C_yumYEC.js";const t=o=>{if("string"==typeof o)return t(new URL(o));const{hostname:e,pathname:p,port:s,protocol:n,search:a}=o;let h;return a&&(h=r(a)),{hostname:e,port:s?parseInt(s):void 0,protocol:n,path:p,query:h}};export{t as p};

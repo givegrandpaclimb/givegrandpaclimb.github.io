@@ -1,0 +1,1 @@
+import{e as t}from"./vendor-smithy-util-uri-escape-CT7eTZv_.js";function e(e){const r=[];for(let o of Object.keys(e).sort()){const s=e[o];if(o=t(o),Array.isArray(s))for(let e=0,f=s.length;e<f;e++)r.push(`${o}=${t(s[e])}`);else{let e=o;(s||"string"==typeof s)&&(e+=`=${t(s)}`),r.push(e)}}return r.join("&")}export{e as b};
