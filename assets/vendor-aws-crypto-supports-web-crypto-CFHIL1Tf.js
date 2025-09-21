@@ -1,1 +1,0 @@
-var e=["decrypt","digest","encrypt","exportKey","generateKey","importKey","sign","verify"];function t(t){return!(!function(e){return"object"==typeof e&&"object"==typeof e.crypto&&"function"==typeof e.crypto.getRandomValues}(t)||"object"!=typeof t.crypto.subtle)&&(n=t.crypto.subtle)&&e.every(function(e){return"function"==typeof n[e]});var n}export{t as s};
