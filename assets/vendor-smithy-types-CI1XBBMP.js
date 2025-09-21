@@ -1,0 +1,1 @@
+var t,s,c,a;(s=t||(t={})).HTTP="http",s.HTTPS="https",(a=c||(c={})).MD5="md5",a.CRC32="crc32",a.CRC32C="crc32c",a.SHA1="sha1",a.SHA256="sha256";const h="__smithy_context";export{c as A,t as E,h as S};
