@@ -1,1 +1,0 @@
-function o(o){const e={};if(o=o.replace(/^\?/,""))for(const n of o.split("&")){let[o,t=null]=n.split("=");o=decodeURIComponent(o),t&&(t=decodeURIComponent(t)),o in e?Array.isArray(e[o])?e[o].push(t):e[o]=[e[o],t]:e[o]=t}return e}export{o as p};
