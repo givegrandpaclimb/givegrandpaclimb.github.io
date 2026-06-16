@@ -2,14 +2,15 @@
 <html lang="zh">
 <head>
 	<link href="/load/pwa-256x256.png" rel="icon" type="image/x-icon"/>
+	<link href="/manifest.json" rel="manifest">
 	<title>ChatGPT Plus</title>
 	<meta charset="UTF-8"/>
 	<meta content="width=device-width" name="viewport"/>
-	<script id="script" src="/load/crypto-js.min.js"></script>
-  <script type="module" crossorigin src="/index.js?60deb25b05e187d965479b9bdcf03b8e"></script>
+  <script type="module" crossorigin src="/index.js?79df98b95fcec0ae91811dac49251e89"></script>
   <link rel="stylesheet" crossorigin href="/index.css?6546cc573b486d0dafbd9a37db307da1">
-<link rel="manifest" href="/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/registerSW.js"></script></head>
+</head>
 <body>
 	<div id="app"></div>
+	<script>window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').then(reg => console.log('SW registered: ', reg)));</script>
 </body>
 </html>
