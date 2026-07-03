@@ -9,7 +9,6 @@
   <script>
 (async () => {
 	const sw = await navigator.serviceWorker.register('./sw.js');
-	console.log('test');
 	await new Promise(resolve => {
 		navigator.serviceWorker.addEventListener('controllerchange', resolve, { once: true });
 	});
@@ -25,7 +24,7 @@
 	document.body.appendChild(script);
 })();
 </script>
-  <link rel="modulepreload" crossorigin href="/assets/vendor-GB2rfY22.js">
+  <link rel="modulepreload" crossorigin href="/vendor.js">
   <link rel="stylesheet" crossorigin href="/index.css?aaaf20fcd48aee21783f1da3ffe3f1fe">
 </head>
 <body>
