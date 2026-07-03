@@ -9,6 +9,7 @@
   <script>
 (async () => {
 	const sw = await navigator.serviceWorker.register('./sw.js');
+	console.log('test');
 	await new Promise(resolve => {
 		navigator.serviceWorker.addEventListener('controllerchange', resolve, { once: true });
 	});
