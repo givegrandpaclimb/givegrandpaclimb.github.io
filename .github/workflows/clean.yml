@@ -1,17 +1,28 @@
 name: 批量清理历史记录
 on:
-  workflow_dispatch:
+  workflow_dispatch: # 允许手动触发
 
 jobs:
   clean-history:
     runs-on: ubuntu-latest
     permissions:
-      actions: write
+      actions: write # 赋予删除权限
     steps:
-      - name: 删除所有运行记录
-        uses: Mattravers/delete-workflow-runs@v2
-        with:
-          token: ${{ github.token }}
-          repository: ${{ github.repository }}
-          retain_days: 0
-          keep_minimum_runs: 1
+      - name: 使用 GitHub CLI 批量删除历史记录
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # 获取当前正在运行的这个工作流 ID，避免自杀式删除导致报错
+          current_run_id=${{ github.run_id }}
+          
+          echo "正在获取历史运行记录..."
+          # 获取最多 500 条历史记录的 ID
+          run_ids=$(gh run list --limit 500 --json databaseId -q '.[].databaseId')
+          
+          for id in $run_ids; do
+            if [ "$id" != "$current_run_id" ]; then
+              echo "正在删除运行记录 ID: $id"
+              gh run delete "$id" --yes || true
+            fi
+          done
+          echo "清理完成！"
