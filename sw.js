@@ -1,8 +1,18 @@
 const CACHE_NAME = 'all-resources-cache-v1';
-const HOST_TO_CACHE = 'givegrandpaclimb.github.io';
 let password = '';
+let cachedKey = null;
+let lastSaltHex = '';
+let currentVersion = '';
 self.addEventListener('message', event => {
-	if (event.data && event.data.type === 'SET_KEY') password = event.data.password;
+	if (event.data && event.data.type === 'SET_KEY') {
+		password = event.data.password;
+		if (event.data.version && currentVersion !== event.data.version) {
+			currentVersion = event.data.version;
+			caches.delete(CACHE_NAME);
+			cachedKey = null;
+			lastSaltHex = '';
+		}
+	}
 });
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', event => {
@@ -15,11 +25,11 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
 	const url = new URL(event.request.url);
 	if (event.request.method !== 'GET') return;
-	if (url.pathname.endsWith('/index.js')) {
+	if (url.pathname.endsWith('.js') && !url.pathname.endsWith('sw.js')) {
 		event.respondWith(handleDecrypt(event.request));
 		return;
 	}
-	if (url.host === HOST_TO_CACHE || url.origin === location.origin) {
+	if (url.origin === location.origin) {
 		const isNavigation = event.request.mode === 'navigate';
 		const isManifest = url.pathname.endsWith('manifest.json');
 		if (isNavigation || isManifest) {
@@ -49,10 +59,20 @@ self.addEventListener('fetch', event => {
 	}
 });
 async function handleDecrypt(request) {
+	const url = new URL(request.url);
 	const cache = await caches.open(CACHE_NAME);
 	let response = await cache.match(request);
 	if (!response) {
-		response = await fetch(request);
+		let fetchRequest = request;
+		if (url.pathname.endsWith('index.js') && currentVersion) {
+			const bustUrl = `${request.url}?v=${currentVersion}`;
+			fetchRequest = new Request(bustUrl, {
+				headers: request.headers,
+				credentials: request.credentials,
+				mode: request.mode
+			});
+		}
+		response = await fetch(fetchRequest);
 		if (!response.ok) return response;
 		await cache.put(request, response.clone());
 	}
@@ -71,17 +91,25 @@ async function handleDecrypt(request) {
 			headers: {'Content-Type': 'application/javascript; charset=utf-8'}
 		});
 	}
-	const encoder = new TextEncoder();
-	const pwKey = await crypto.subtle.importKey('raw', encoder.encode(password), 'PBKDF2', false, ['deriveKey']);
-	const key = await crypto.subtle.deriveKey({
-		name: 'PBKDF2',
-		salt: salt,
-		iterations: 10000,
-		hash: 'SHA-256'
-	}, pwKey, {
-		name: 'AES-GCM',
-		length: 256
-	}, false, ['decrypt']);
+	const saltHex = Array.from(new Uint8Array(salt)).map(b => b.toString(16).padStart(2, '0')).join('');
+	let key;
+	if (cachedKey && saltHex === lastSaltHex) {
+		key = cachedKey;
+	} else {
+		const encoder = new TextEncoder();
+		const pwKey = await crypto.subtle.importKey('raw', encoder.encode(password), 'PBKDF2', false, ['deriveKey']);
+		key = await crypto.subtle.deriveKey({
+			name: 'PBKDF2',
+			salt: salt,
+			iterations: 10000,
+			hash: 'SHA-256'
+		}, pwKey, {
+			name: 'AES-GCM',
+			length: 256
+		}, false, ['decrypt']);
+		cachedKey = key;
+		lastSaltHex = saltHex;
+	}
 	const decrypted = await crypto.subtle.decrypt({
 		name: 'AES-GCM',
 		iv: iv
