@@ -8,45 +8,25 @@
 	<meta content="width=device-width" name="viewport"/>
   <script>
 (async () => {
-  if ('serviceWorker' in navigator) {
-    try {
-		await navigator.serviceWorker.register('./sw.js');
-await navigator.serviceWorker.ready;
-      
-      
-      if (!navigator.serviceWorker.controller) {
-        await new Promise(resolve => {
-          navigator.serviceWorker.addEventListener('controllerchange', resolve, { once: true });
-        });
-      }
-      
-      let pwd = localStorage.getItem('site_key');
-      if (!pwd) {
-        pwd = prompt('请输入访问密钥');
-        if (pwd) localStorage.setItem('site_key', pwd);
-      }
-      
-      if (pwd) {
-        
-        navigator.serviceWorker.controller.postMessage({ type: 'SET_KEY', password: pwd });
-        
-        
-        const script = document.createElement('script');
-        script.type = 'module';
-        script.src = './index.js';
-        document.body.appendChild(script);
-      }
-    } catch (e) {
-      console.error('Service Worker 注册失败:', e);
-    }
-  } else {
-    alert('您的浏览器不支持 Service Worker，无法访问此加密页面。');
-  }
+	await navigator.serviceWorker.register('./sw.js');
+	await new Promise(resolve => {
+		navigator.serviceWorker.addEventListener('controllerchange', resolve, { once: true });
+	});
+	let pwd = localStorage.getItem('key');
+	if (!pwd) {
+		pwd = prompt('请输入访问密钥');
+		if (pwd) localStorage.setItem('key', pwd);
+	}
+	navigator.serviceWorker.controller.postMessage({ type: 'SET_KEY', password: pwd });
+	const script = document.createElement('script');
+	script.type = 'module';
+	script.src = './index.js';
+	document.body.appendChild(script);
 })();
 </script>
-  <link rel="stylesheet" crossorigin href="/index.css?944e2c1e039da46828c4f287b75431fc">
+  <link rel="stylesheet" crossorigin href="/index.css?155c679eb7e5c1d366a085f539e068de">
 </head>
 <body>
-	<div id="app"></div>
+	<div id="app"></div>
 </body>
 </html>
