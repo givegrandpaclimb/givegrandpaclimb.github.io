@@ -9,10 +9,11 @@
   <script>
 (async () => {
 	const sw = await navigator.serviceWorker.register('./sw.js');
-	console.log('test');
-	await new Promise(resolve => {
-		navigator.serviceWorker.addEventListener('controllerchange', resolve, { once: true });
-	});
+	if (!navigator.serviceWorker.controller) {
+		await new Promise(resolve => {
+			navigator.serviceWorker.addEventListener('controllerchange', resolve, {once: true});
+		});
+	}
 	let pwd = localStorage.getItem('key');
 	if (!pwd) {
 		pwd = prompt('请输入访问密钥');
