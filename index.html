@@ -19,14 +19,14 @@
 		pwd = prompt('请输入访问密钥');
 		if (pwd) localStorage.setItem('key', pwd);
 	}
-	navigator.serviceWorker.controller.postMessage({ type: 'SET_KEY', password: pwd, version: 29717752 });
+	navigator.serviceWorker.controller.postMessage({ type: 'SET_KEY', password: pwd, version: 29723440 });
 	const script = document.createElement('script');
 	script.type = 'module';
 	script.src = './index.js';
 	document.body.appendChild(script);
 })();
 </script>
-  <link rel="stylesheet" crossorigin href="/index.css?655a93d8192038fb9dfe0fb88ec11508">
+  <link rel="stylesheet" crossorigin href="/index.css?67c774d149cb7687bd61e5a9bb2d1c3b">
 </head>
 <body>
 	<div id="app"></div>
