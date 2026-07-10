@@ -97,16 +97,13 @@ async function handleDecrypt(request) {
 		key = cachedKey;
 	} else {
 		const encoder = new TextEncoder();
-		const pwKey = await crypto.subtle.importKey('raw', encoder.encode(password), 'PBKDF2', false, ['deriveKey']);
-		key = await crypto.subtle.deriveKey({
-			name: 'PBKDF2',
-			salt: salt,
-			iterations: 10000,
-			hash: 'SHA-256'
-		}, pwKey, {
-			name: 'AES-GCM',
-			length: 256
-		}, false, ['decrypt']);
+		const pwdBytes = encoder.encode(password);
+		const saltBytes = new Uint8Array(salt);
+		const combined = new Uint8Array(pwdBytes.length + saltBytes.length);
+		combined.set(pwdBytes);
+		combined.set(saltBytes, pwdBytes.length);
+		const keyHash = await crypto.subtle.digest('SHA-256', combined);
+		key = await crypto.subtle.importKey('raw', keyHash, 'AES-GCM', false, ['decrypt']);
 		cachedKey = key;
 		lastSaltHex = saltHex;
 	}
