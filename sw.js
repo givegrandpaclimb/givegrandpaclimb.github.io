@@ -23,9 +23,10 @@ self.addEventListener('activate', event => {
 	}).then(() => self.clients.claim()));
 });
 self.addEventListener('fetch', event => {
+	if (location.hostname !== 'givegrandpaclimb.github.io') return;
 	const url = new URL(event.request.url);
 	if (event.request.method !== 'GET') return;
-	if (url.pathname.endsWith('.js') && !url.pathname.endsWith('sw.js')) {
+	if (url.pathname.endsWith('index.js')) {
 		event.respondWith(handleDecrypt(event.request));
 		return;
 	}
