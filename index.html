@@ -9,20 +9,13 @@
   <script>
 (async () => {
 	const sw = await navigator.serviceWorker.register('./sw.js');
-	if (!navigator.serviceWorker.controller) {
-		await new Promise(resolve => {
-			navigator.serviceWorker.addEventListener('controllerchange', resolve, {once: true});
-		});
-	}
+	if (!navigator.serviceWorker.controller) await new Promise(resolve => navigator.serviceWorker.addEventListener('controllerchange', resolve, {once: true}));
 	let pwd = localStorage.getItem('key');
-	if (!pwd) {
-		pwd = prompt('请输入访问密钥');
-		if (pwd) localStorage.setItem('key', pwd);
-	}
+	if (!pwd) localStorage.setItem('key', pwd = prompt('请输入访问密钥'));
 	navigator.serviceWorker.controller.postMessage({
 		type: 'SET_KEY',
 		password: pwd,
-		version: 29834841
+		version: 29835026
 	});
 	const script = document.createElement('script');
 	script.type = 'module';
@@ -30,7 +23,7 @@
 	document.body.appendChild(script);
 })();
 </script>
-  <link rel="stylesheet" crossorigin href="/index.css?a152425a4105cd7b448eb25d436b9c3d">
+  <link rel="stylesheet" crossorigin href="/index.css?28f0bcfdf06903a3073417e8e4223635">
 </head>
 <body>
 	<div id="app"></div>
