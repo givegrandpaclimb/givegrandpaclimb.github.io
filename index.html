@@ -18,12 +18,12 @@
 	navigator.serviceWorker.controller.postMessage({
 		type: 'SET_KEY',
 		password: pwd,
-		version: 29834367
+		version: 29834834
 	});
 	const script = document.createElement('script');
 	script.type = 'module';
 	script.src = './index.js';
-	document.body.appendChild(script);
+	document.head.appendChild(script);
 })();
 </script>
   <link rel="stylesheet" crossorigin href="/index.css?a152425a4105cd7b448eb25d436b9c3d">
